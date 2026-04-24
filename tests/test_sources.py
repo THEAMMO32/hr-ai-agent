@@ -13,7 +13,7 @@ class TestRSSSources:
         pytest.skip("Not implemented yet")
     
     def test_rss_fetch_failure_handling(self):
-        """Test graceful handling of RSS fetch failures."""
+        """Test graceful handling of RSS feed failures."""
         pytest.skip("Not implemented yet")
     
     def test_rss_parsing(self):
