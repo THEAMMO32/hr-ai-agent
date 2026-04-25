@@ -22,7 +22,7 @@ def fresh_state(tmp_path):
 @pytest.fixture
 def mock_external_services():
     """Mock all external calls: translator, classifier, GigaChat."""
-    with patch('src.agent.core.translate_if_needed', side_effect=lambda text, lang=None: text), \
+    with patch('src.agent.core.translate_if_needed', return_value="Mock translated text"), \
          patch('src.agent.core.classify_content', return_value={
              "topic": "culture", "confidence": 0.7, "keywords": ["test"]
          }), \
@@ -138,9 +138,9 @@ class TestHRAgent:
             "published": RECENT
         }]
         mock_mock_data.generate_batch.return_value = []
-        # Классифицируем как "burnout", чтобы triggered _should_generate_insight
+        # Для срабатывания генерации инсайта нужен топик burnout (risk_score >= 0.6)
         with patch('src.agent.core.classify_content', return_value={
-            "topic": "burnout", "confidence": 0.9, "keywords": ["burnout"]
+            "topic": "burnout", "confidence": 0.8, "keywords": ["burnout"]
         }):
             result = agent.run_cycle()
         assert len(result["insights_generated"]) == 1
